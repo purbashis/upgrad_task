@@ -1,44 +1,48 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
-public class Find_duplicate {
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
 
-    public static int[] findDuplicates(int[] nums) {
-        int[] counts = new int[nums.length];
-        int countIndex = 0;
+        if (nums.length == 1) {
+            return result;
+        }
 
-        for (int i = 0; i < nums.length - 1; i++) { // Update the loop condition
-            int index = Math.abs(nums[i]) - 1;
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
 
-            if (nums[index] < 0) {
-                counts[countIndex] = Math.abs(nums[i]);
-                countIndex++;
-            } else {
-                nums[index] = -nums[index];
+        for (int num : map.keySet()) {
+            if (map.get(num) > 1) {
+                result.add(num);
             }
         }
 
-        int[] duplicates = new int[countIndex];
-
-        for (int i = 0; i < countIndex; i++) {
-            duplicates[i] = counts[i];
-        }
-
-        return duplicates;
+        Collections.sort(result);
+        return result;
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Enter the length of the array:");
-        int length = sc.nextInt();
-        int[] arr = new int[length];
+        int length = scanner.nextInt();
+        int[] nums = new int[length];
 
         System.out.println("Enter the elements of the array:");
         for (int i = 0; i < length; i++) {
-            arr[i] = sc.nextInt();
+            nums[i] = scanner.nextInt();
         }
 
-        int[] duplicates = findDuplicates(arr);
-        System.out.print("Duplicates in the array: ");
+        Solution solution = new Solution();
+        List<Integer> duplicates = solution.findDuplicates(nums);
+
+        System.out.println("Duplicates in the array:");
         for (int num : duplicates) {
             System.out.print(num + " ");
         }
